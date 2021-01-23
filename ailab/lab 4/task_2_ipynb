@@ -1,0 +1,2500 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "Data = np.loadtxt(open(\"Lab4PokerData.txt\", \"rb\"), delimiter=\";\", skiprows=1, dtype='str')\n",
+    "#loading the data in the form of string"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array(['1 , flush K 320 , TwoPairs A 120 , Raise 5 Raise 10 , Raise 20 Raise 77 , Call 77 ',\n",
+       "       '2 , HighCard A 230 , straight 6 357 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '3 , HighCard 4 173 , flush A 374 , Raise 5 Raise 10 , Raise 87 Call 87 , ',\n",
+       "       '4 , fullhouse T 447 , TwoPairs A 195 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '5 , OnePair 9 486 , TwoPairs J 220 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '6 , OnePair J 216 , straightflush T 495 , Raise 5 Raise 10 , Raise 3 Raise 6 , Fold 0 ',\n",
+       "       '7 , OnePair 9 297 , straightflush A 476 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '8 , HighCard T 109 , TwoPairs K 485 , Raise 5 Raise 10 , Raise 52 AllIn 475 , ',\n",
+       "       '9 , 3ofakind T 242 , TwoPairs Q 156 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '10 , TwoPairs T 129 , fullhouse J 427 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '11 , HighCard K 330 , HighCard A 123 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '12 , OnePair 6 285 , OnePair 7 243 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '13 , straight 8 367 , TwoPairs T 80 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '14 , TwoPairs T 370 , TwoPairs A 360 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '15 , HighCard 2 142 , 3ofakind 4 327 , Raise 5 Raise 10 , Raise 61 Call 61 , ',\n",
+       "       '16 , TwoPairs Q 170 , 3ofakind 9 469 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '17 , OnePair A 130 , fullhouse A 269 , Raise 5 Raise 10 , Raise 53 Call 53 , ',\n",
+       "       '18 , straight 5 362 , HighCard Q 160 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '19 , flush 7 385 , TwoPairs A 111 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '20 , OnePair 2 233 , fullhouse 3 440 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '21 , OnePair 2 424 , HighCard K 216 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '22 , TwoPairs J 146 , straight 8 277 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '23 , OnePair Q 304 , OnePair 2 150 , Raise 5 Raise 10 , Raise 163 Fold 0 , ',\n",
+       "       '24 , OnePair 3 423 , TwoPairs A 410 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '25 , OnePair 4 226 , 3ofakind 5 445 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '26 , straight 5 409 , TwoPairs Q 201 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '27 , OnePair 7 206 , flush 6 478 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '28 , OnePair K 189 , TwoPairs J 280 , Raise 5 Raise 10 , Raise 155 AllIn 270 , ',\n",
+       "       '29 , TwoPairs T 306 , fullhouse K 474 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '30 , straightflush J 298 , TwoPairs T 89 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '31 , 3ofakind A 492 , HighCard K 250 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '32 , HighCard T 158 , flush 8 448 , Raise 5 Raise 10 , Raise 45 Call 45 , ',\n",
+       "       '33 , HighCard J 107 , 4ofakind 8 217 , Raise 5 Raise 10 , Raise 19 Call 19 , ',\n",
+       "       '34 , TwoPairs T 30 , fullhouse K 292 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '35 , TwoPairs K 194 , fullhouse K 461 , Raise 5 Raise 10 , Raise 20 Raise 40 , Raise 91 Call 91 , ',\n",
+       "       '36 , flush T 292 , OnePair 5 169 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '37 , OnePair Q 35 , straightflush 4 166 , Raise 5 Raise 10 , Raise 18 Call 18 , ',\n",
+       "       '38 , OnePair 5 233 , 3ofakind A 455 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '39 , HighCard A 312 , straightflush 2 477 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '40 , HighCard 9 30 , straight 3 451 , Raise 5 Raise 10 , Raise 7 Raise 14 , Raise 1 Raise 2 , Call 2 ',\n",
+       "       '41 , HighCard 5 87 , 3ofakind 8 180 , Raise 5 Raise 10 , Raise 49 Call 49 , ',\n",
+       "       '42 , 3ofakind 5 298 , HighCard K 205 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '43 , TwoPairs T 64 , flush 3 473 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '44 , straightflush 2 258 , TwoPairs K 97 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '45 , HighCard 5 200 , 4ofakind A 484 , Raise 5 Raise 10 , Raise 118 Call 118 , ',\n",
+       "       '46 , straightflush 8 496 , OnePair 2 179 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '47 , HighCard Q 273 , flush 9 498 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '48 , straight Q 427 , TwoPairs T 198 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '49 , 3ofakind 9 470 , HighCard Q 125 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '50 , 4ofakind Q 274 , TwoPairs Q 183 , Raise 5 Raise 10 , Raise 20 Raise 23 , Call 23 ',\n",
+       "       '51 , HighCard A 276 , fullhouse 6 469 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '52 , flush 5 435 , TwoPairs J 191 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '53 , TwoPairs J 49 , 4ofakind 2 324 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '54 , OnePair A 68 , 4ofakind J 311 , Raise 5 Raise 10 , Raise 5 Raise 10 , Call 10 ',\n",
+       "       '55 , flush 4 367 , OnePair 2 192 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '56 , OnePair 5 438 , TwoPairs T 174 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '57 , 3ofakind A 421 , TwoPairs A 271 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '58 , fullhouse 7 381 , TwoPairs A 154 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '59 , fullhouse 7 246 , HighCard Q 148 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '60 , 4ofakind T 363 , OnePair T 241 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '61 , flush T 398 , HighCard Q 136 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '62 , OnePair 7 388 , TwoPairs T 311 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '63 , HighCard 9 52 , 4ofakind 9 166 , Raise 5 Raise 10 , Raise 32 Call 32 , ',\n",
+       "       '64 , OnePair 8 426 , OnePair 2 167 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '65 , flush 5 458 , TwoPairs T 83 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '66 , HighCard J 51 , HighCard A 147 , Raise 5 Raise 10 , Raise 22 Fold 0 , ',\n",
+       "       '67 , HighCard 8 59 , straightflush 2 448 , Raise 5 Raise 10 , Raise 21 Raise 42 , Fold 0 ',\n",
+       "       '68 , OnePair 8 246 , fullhouse 9 487 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '69 , 3ofakind 9 436 , OnePair 5 139 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '70 , OnePair 7 471 , TwoPairs J 332 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '71 , OnePair 4 485 , OnePair 5 188 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '72 , OnePair 2 256 , 3ofakind 5 468 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '73 , fullhouse 3 352 , TwoPairs T 219 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '74 , 4ofakind 2 404 , TwoPairs J 152 , Raise 5 Raise 10 , Raise 20 Raise 68 , Call 68 ',\n",
+       "       '75 , OnePair K 78 , flush 3 164 , Raise 5 Raise 10 , Raise 5 Raise 10 , Raise 46 Call 46 , ',\n",
+       "       '76 , HighCard T 195 , straight K 373 , Raise 5 Raise 10 , Raise 73 Call 73 , ',\n",
+       "       '77 , HighCard Q 288 , OnePair T 218 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '78 , HighCard J 32 , 4ofakind Q 210 , Raise 5 Raise 10 , Raise 3 Raise 6 , AllIn 24 ',\n",
+       "       '79 , OnePair 6 286 , TwoPairs J 31 , Raise 5 Raise 10 , Raise 20 Raise 0 , Call 0 ',\n",
+       "       '80 , OnePair Q 58 , 4ofakind 7 179 , Raise 5 Raise 10 , Raise 16 Call 16 , ',\n",
+       "       '81 , 4ofakind 2 456 , HighCard A 123 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '82 , fullhouse K 480 , TwoPairs T 184 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '83 , straight 2 373 , TwoPairs A 216 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '84 , OnePair 2 254 , TwoPairs Q 114 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '85 , flush 5 307 , OnePair T 133 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '86 , OnePair K 125 , straight K 274 , Raise 5 Raise 10 , Raise 46 Call 46 , ',\n",
+       "       '87 , OnePair 2 482 , TwoPairs T 222 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '88 , fullhouse 3 439 , TwoPairs Q 176 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '89 , TwoPairs 6 62 , fullhouse 8 167 , Raise 5 Raise 10 , Raise 10 Call 10 , ',\n",
+       "       '90 , OnePair 6 399 , OnePair 7 145 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '91 , 4ofakind A 408 , OnePair 9 215 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '92 , flush 2 452 , TwoPairs A 208 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '93 , 3ofakind 4 393 , OnePair Q 59 , Raise 5 Raise 19 , Raise 38 Fold 0 , ',\n",
+       "       '94 , TwoPairs T 53 , 3ofakind 6 388 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '95 , OnePair 5 129 , OnePair J 80 , Raise 5 Raise 3 , Raise 6 Raise 21 , Fold 0 ',\n",
+       "       '96 , straight 7 417 , TwoPairs Q 101 , Raise 5 Raise 10 , Raise 20 AllIn 91 , ',\n",
+       "       '97 , 4ofakind J 304 , OnePair 2 185 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '98 , 4ofakind 6 285 , HighCard K 168 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '99 , flush 4 449 , OnePair 4 204 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '100 , TwoPairs Q 231 , 4ofakind 4 486 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '101 , OnePair 3 340 , OnePair 4 208 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '102 , OnePair 2 257 , straight A 456 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '103 , OnePair T 231 , straightflush 9 486 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '104 , OnePair A 103 , fullhouse 7 405 , Raise 5 Raise 10 , Raise 15 Raise 30 , AllIn 83 ',\n",
+       "       '105 , TwoPairs K 173 , fullhouse 4 415 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '106 , OnePair 5 457 , TwoPairs T 145 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '107 , TwoPairs K 328 , TwoPairs T 347 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '108 , OnePair 4 251 , 3ofakind 2 481 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '109 , fullhouse J 459 , TwoPairs J 161 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '110 , flush 4 325 , OnePair 9 198 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '111 , 4ofakind 4 478 , TwoPairs A 205 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '112 , OnePair T 216 , flush 7 403 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '113 , straight J 356 , TwoPairs T 154 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '114 , 3ofakind 4 331 , OnePair 7 159 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '115 , OnePair 6 242 , flush 9 363 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '116 , 4ofakind 8 457 , OnePair A 122 , Raise 5 Raise 17 , Raise 34 Raise 6 , Raise 12 Raise 13 , Raise 26 AllIn 86 , ',\n",
+       "       '117 , 4ofakind 2 472 , OnePair 4 239 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '118 , OnePair Q 386 , TwoPairs Q 492 , Raise 5 Raise 10 , Raise 282 Raise 94 , Call 94 ',\n",
+       "       '119 , TwoPairs K 42 , 3ofakind 6 140 , Raise 5 Raise 10 , Raise 23 Call 23 , ',\n",
+       "       '120 , TwoPairs T 50 , 4ofakind 9 396 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '121 , TwoPairs A 175 , flush 8 259 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '122 , OnePair 3 482 , OnePair 4 158 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '123 , 3ofakind Q 272 , TwoPairs A 139 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '124 , TwoPairs Q 122 , 3ofakind J 216 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '125 , OnePair Q 206 , straightflush 3 350 , Raise 5 Raise 10 , Raise 61 Call 61 , ',\n",
+       "       '126 , OnePair 2 250 , flush 6 389 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '127 , TwoPairs A 58 , straight 8 274 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '128 , straightflush K 480 , OnePair T 116 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '129 , straight 8 470 , OnePair 9 192 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '130 , HighCard T 120 , fullhouse J 332 , Raise 5 Raise 10 , Raise 32 Call 32 , ',\n",
+       "       '131 , HighCard A 354 , OnePair J 402 , Raise 5 Raise 11 , Raise 22 Call 22 , ',\n",
+       "       '132 , TwoPairs Q 240 , fullhouse 3 376 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '133 , flush 5 315 , OnePair 9 163 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '134 , OnePair 9 257 , OnePair 2 180 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '135 , TwoPairs J 105 , flush 9 385 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '136 , HighCard 3 61 , OnePair 4 173 , Raise 5 Raise 10 , Raise 7 Raise 14 , Fold 0 ',\n",
+       "       '137 , straight 2 257 , OnePair 4 167 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '138 , TwoPairs A 46 , fullhouse A 336 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '139 , flush 3 477 , TwoPairs A 149 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '140 , TwoPairs J 121 , TwoPairs Q 275 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '141 , OnePair 6 255 , 4ofakind 5 492 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '142 , TwoPairs J 81 , straight T 431 , Raise 5 Raise 10 , Raise 20 Raise 40 , Raise 10 Raise 20 , Raise 25 Call 25 , ',\n",
+       "       '143 , OnePair 8 411 , OnePair 9 191 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '144 , TwoPairs J 192 , flush 9 328 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '145 , TwoPairs T 193 , 3ofakind 5 441 , Raise 5 Raise 10 , Raise 20 Raise 40 , Raise 122 Call 122 , ',\n",
+       "       '146 , TwoPairs K 200 , flush Q 316 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '147 , TwoPairs J 76 , HighCard Q 119 , Raise 5 Raise 10 , Raise 19 Fold 0 , ',\n",
+       "       '148 , HighCard 2 156 , 3ofakind 2 232 , Raise 5 Raise 10 , Raise 5 Raise 10 , Call 10 ',\n",
+       "       '149 , straight A 491 , TwoPairs K 297 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '150 , HighCard K 297 , straightflush J 459 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '151 , TwoPairs K 347 , TwoPairs T 445 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '152 , OnePair 5 495 , TwoPairs Q 386 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '153 , fullhouse 8 425 , TwoPairs K 165 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '154 , straightflush 8 301 , TwoPairs K 158 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '155 , HighCard 6 36 , 3ofakind 3 219 , Raise 5 Raise 10 , Raise 7 Raise 14 , Raise 1 Raise 2 , Call 2 ',\n",
+       "       '156 , TwoPairs Q 201 , flush 3 434 , Raise 5 Raise 10 , Raise 20 Raise 40 , AllIn 176 ',\n",
+       "       '157 , HighCard 7 148 , straight 7 361 , Raise 5 Raise 10 , Raise 35 Call 35 , ',\n",
+       "       '158 , straight A 311 , OnePair 6 194 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '159 , OnePair T 270 , flush T 400 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '160 , OnePair 6 329 , TwoPairs K 485 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '161 , OnePair 8 300 , flush 5 495 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '162 , straightflush 6 348 , OnePair 3 119 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '163 , OnePair 5 290 , flush 7 495 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '164 , flush T 336 , OnePair 2 119 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '165 , TwoPairs K 188 , straight 3 461 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '166 , HighCard 9 163 , straight J 359 , Raise 5 Raise 10 , Raise 4 Raise 8 , Raise 85 Call 85 , ',\n",
+       "       '167 , straightflush 2 251 , TwoPairs Q 104 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '168 , HighCard 4 193 , HighCard A 117 , Raise 5 Raise 10 , Raise 102 Fold 0 , ',\n",
+       "       '169 , TwoPairs J 197 , fullhouse K 355 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '170 , 4ofakind J 412 , TwoPairs Q 76 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '171 , OnePair J 170 , straight 4 415 , Raise 5 Raise 10 , Raise 29 Call 29 , ',\n",
+       "       '172 , straight 9 218 , TwoPairs J 50 , Raise 5 Raise 10 , Raise 20 AllIn 40 , ',\n",
+       "       '173 , OnePair J 123 , TwoPairs J 381 , Raise 5 Raise 10 , Raise 80 Raise 91 , Fold 0 ',\n",
+       "       '174 , straightflush 7 443 , OnePair 3 186 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '175 , 3ofakind 9 440 , TwoPairs A 250 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '176 , 4ofakind A 272 , HighCard K 157 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '177 , 4ofakind 2 455 , OnePair 7 174 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '178 , OnePair Q 263 , straight 5 389 , Raise 5 Raise 10 , Raise 149 Call 149 , ',\n",
+       "       '179 , HighCard 2 119 , fullhouse 4 485 , Raise 5 Raise 10 , Raise 59 Call 59 , ',\n",
+       "       '180 , TwoPairs T 260 , straightflush 9 441 , Raise 5 Raise 10 , Raise 20 Raise 40 , AllIn 235 ',\n",
+       "       '181 , OnePair T 427 , OnePair 2 112 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '182 , HighCard A 304 , HighCard A 111 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '183 , OnePair Q 431 , OnePair J 73 , Raise 5 Raise 57 , Raise 332 Fold 0 , ',\n",
+       "       '184 , HighCard 2 91 , fullhouse J 492 , Raise 5 Raise 10 , Raise 8 Raise 16 , Raise 4 Raise 8 , Call 8 ',\n",
+       "       '185 , straightflush 7 414 , TwoPairs A 194 , Raise 5 Raise 10 , Raise 20 AllIn 184 , ',\n",
+       "       '186 , HighCard J 126 , HighCard Q 221 , Raise 5 Raise 10 , Raise 42 Fold 0 , ',\n",
+       "       '187 , straight 8 416 , TwoPairs A 81 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '188 , HighCard 7 136 , flush 8 438 , Raise 5 Raise 10 , Raise 93 Call 93 , ',\n",
+       "       '189 , flush 9 391 , OnePair 7 139 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '190 , TwoPairs K 73 , flush Q 308 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '191 , HighCard Q 245 , 4ofakind Q 434 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '192 , 3ofakind 9 483 , OnePair 6 165 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '193 , fullhouse 3 430 , TwoPairs J 214 , Raise 5 Raise 10 , Raise 20 Raise 40 , Call 40 ',\n",
+       "       '194 , TwoPairs K 169 , straight 4 490 , Raise 5 Raise 10 , Raise 20 Raise 40 , AllIn 144 ',\n",
+       "       '195 , OnePair 7 227 , 4ofakind T 343 , Raise 5 Raise 10 , Raise 20 Call 20 , ',\n",
+       "       '196 , HighCard A 243 , 4ofakind K 474 , Raise 5 Raise 10 , Raise 20 Raise 40 , Fold 0 ',\n",
+       "       '197 , HighCard A 455 , OnePair 8 150 , Raise 5 Raise 10 , Raise 20 Fold 0 , ',\n",
+       "       '198 , HighCard 4 104 , straight K 466 , Raise 5 Raise 10 , Raise 20 Raise 40 , AllIn 79 ',\n",
+       "       '199 , HighCard T 191 , OnePair 6 228 , Raise 5 Raise 10 , Raise 111 Fold 0 , '],\n",
+       "      dtype='<U117')"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "Data"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data1=pd.Series(Data)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d=data1.str.split(' ',expand=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "(199, 31)"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d.shape"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d1=d.iloc[:,:22]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>0</th>\n",
+       "      <th>1</th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>5</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>9</th>\n",
+       "      <th>...</th>\n",
+       "      <th>12</th>\n",
+       "      <th>13</th>\n",
+       "      <th>14</th>\n",
+       "      <th>15</th>\n",
+       "      <th>16</th>\n",
+       "      <th>17</th>\n",
+       "      <th>18</th>\n",
+       "      <th>19</th>\n",
+       "      <th>20</th>\n",
+       "      <th>21</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "      <td>,</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>K</td>\n",
+       "      <td>320</td>\n",
+       "      <td>,</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>120</td>\n",
+       "      <td>,</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>10</td>\n",
+       "      <td>,</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>77</td>\n",
+       "      <td>,</td>\n",
+       "      <td>Call</td>\n",
+       "      <td>77</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>1</td>\n",
+       "      <td>2</td>\n",
+       "      <td>,</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>A</td>\n",
+       "      <td>230</td>\n",
+       "      <td>,</td>\n",
+       "      <td>straight</td>\n",
+       "      <td>6</td>\n",
+       "      <td>357</td>\n",
+       "      <td>,</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>10</td>\n",
+       "      <td>,</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Call</td>\n",
+       "      <td>20</td>\n",
+       "      <td>,</td>\n",
+       "      <td></td>\n",
+       "      <td>None</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>2</td>\n",
+       "      <td>3</td>\n",
+       "      <td>,</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>4</td>\n",
+       "      <td>173</td>\n",
+       "      <td>,</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>A</td>\n",
+       "      <td>374</td>\n",
+       "      <td>,</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>10</td>\n",
+       "      <td>,</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>87</td>\n",
+       "      <td>Call</td>\n",
+       "      <td>87</td>\n",
+       "      <td>,</td>\n",
+       "      <td></td>\n",
+       "      <td>None</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>4</td>\n",
+       "      <td>,</td>\n",
+       "      <td>fullhouse</td>\n",
+       "      <td>T</td>\n",
+       "      <td>447</td>\n",
+       "      <td>,</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>195</td>\n",
+       "      <td>,</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>10</td>\n",
+       "      <td>,</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>40</td>\n",
+       "      <td>,</td>\n",
+       "      <td>Call</td>\n",
+       "      <td>40</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>5</td>\n",
+       "      <td>,</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>,</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>J</td>\n",
+       "      <td>220</td>\n",
+       "      <td>,</td>\n",
+       "      <td>...</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>10</td>\n",
+       "      <td>,</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>20</td>\n",
+       "      <td>Raise</td>\n",
+       "      <td>40</td>\n",
+       "      <td>,</td>\n",
+       "      <td>Fold</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>5 rows × 22 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  0  1          2  3    4  5         6  7    8  9   ...     12  13 14     15  \\\n",
+       "0  1  ,      flush  K  320  ,  TwoPairs  A  120  ,  ...  Raise  10  ,  Raise   \n",
+       "1  2  ,   HighCard  A  230  ,  straight  6  357  ,  ...  Raise  10  ,  Raise   \n",
+       "2  3  ,   HighCard  4  173  ,     flush  A  374  ,  ...  Raise  10  ,  Raise   \n",
+       "3  4  ,  fullhouse  T  447  ,  TwoPairs  A  195  ,  ...  Raise  10  ,  Raise   \n",
+       "4  5  ,    OnePair  9  486  ,  TwoPairs  J  220  ,  ...  Raise  10  ,  Raise   \n",
+       "\n",
+       "   16     17  18 19    20    21  \n",
+       "0  20  Raise  77  ,  Call    77  \n",
+       "1  20   Call  20  ,        None  \n",
+       "2  87   Call  87  ,        None  \n",
+       "3  20  Raise  40  ,  Call    40  \n",
+       "4  20  Raise  40  ,  Fold     0  \n",
+       "\n",
+       "[5 rows x 22 columns]"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d1.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d1=d1.iloc[:,2:]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#d1['ag amount by p1']=d.loc[13]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d1=d1.drop([5,9,14,19,10,12,15,17,21],axis=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>11</th>\n",
+       "      <th>13</th>\n",
+       "      <th>16</th>\n",
+       "      <th>18</th>\n",
+       "      <th>20</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>K</td>\n",
+       "      <td>320</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>77</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>1</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>A</td>\n",
+       "      <td>230</td>\n",
+       "      <td>straight</td>\n",
+       "      <td>6</td>\n",
+       "      <td>357</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>20</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>2</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>4</td>\n",
+       "      <td>173</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>A</td>\n",
+       "      <td>374</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>87</td>\n",
+       "      <td>87</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>fullhouse</td>\n",
+       "      <td>T</td>\n",
+       "      <td>447</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>195</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>J</td>\n",
+       "      <td>220</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "          2  3    4         6  7    8  11  13  16  18    20\n",
+       "0      flush  K  320  TwoPairs  A  120  5  10  20  77  Call\n",
+       "1   HighCard  A  230  straight  6  357  5  10  20  20      \n",
+       "2   HighCard  4  173     flush  A  374  5  10  87  87      \n",
+       "3  fullhouse  T  447  TwoPairs  A  195  5  10  20  40  Call\n",
+       "4    OnePair  9  486  TwoPairs  J  220  5  10  20  40  Fold"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d1.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>11</th>\n",
+       "      <th>13</th>\n",
+       "      <th>16</th>\n",
+       "      <th>18</th>\n",
+       "      <th>20</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>K</td>\n",
+       "      <td>320</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>77</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>1</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>A</td>\n",
+       "      <td>230</td>\n",
+       "      <td>straight</td>\n",
+       "      <td>6</td>\n",
+       "      <td>357</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>20</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>2</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>4</td>\n",
+       "      <td>173</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>A</td>\n",
+       "      <td>374</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>87</td>\n",
+       "      <td>87</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>fullhouse</td>\n",
+       "      <td>T</td>\n",
+       "      <td>447</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>195</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>J</td>\n",
+       "      <td>220</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "          2  3    4         6  7    8  11  13  16  18    20\n",
+       "0      flush  K  320  TwoPairs  A  120  5  10  20  77  Call\n",
+       "1   HighCard  A  230  straight  6  357  5  10  20  20      \n",
+       "2   HighCard  4  173     flush  A  374  5  10  87  87      \n",
+       "3  fullhouse  T  447  TwoPairs  A  195  5  10  20  40  Call\n",
+       "4    OnePair  9  486  TwoPairs  J  220  5  10  20  40  Fold"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d1.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "         127\n",
+       "Fold      34\n",
+       "Call      23\n",
+       "Raise      9\n",
+       "AllIn      6\n",
+       "Name: 20, dtype: int64"
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d1.iloc[:,-1].value_counts()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>11</th>\n",
+       "      <th>13</th>\n",
+       "      <th>16</th>\n",
+       "      <th>18</th>\n",
+       "      <th>20</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>K</td>\n",
+       "      <td>320</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>77</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>1</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>A</td>\n",
+       "      <td>230</td>\n",
+       "      <td>straight</td>\n",
+       "      <td>6</td>\n",
+       "      <td>357</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>20</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>2</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>4</td>\n",
+       "      <td>173</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>A</td>\n",
+       "      <td>374</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>87</td>\n",
+       "      <td>87</td>\n",
+       "      <td></td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>fullhouse</td>\n",
+       "      <td>T</td>\n",
+       "      <td>447</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>195</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>J</td>\n",
+       "      <td>220</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "          2  3    4         6  7    8  11  13  16  18    20\n",
+       "0      flush  K  320  TwoPairs  A  120  5  10  20  77  Call\n",
+       "1   HighCard  A  230  straight  6  357  5  10  20  20      \n",
+       "2   HighCard  4  173     flush  A  374  5  10  87  87      \n",
+       "3  fullhouse  T  447  TwoPairs  A  195  5  10  20  40  Call\n",
+       "4    OnePair  9  486  TwoPairs  J  220  5  10  20  40  Fold"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d1.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "RANK_CLASS_COURSE = {\n",
+    "    \"straightflush\": 1,\n",
+    "    \"4ofakind\": 2,\n",
+    "    \"fullhouse\": 3,\n",
+    "    \"flush\": 4,\n",
+    "    \"straight\": 5,\n",
+    "    \"3ofakind\": 6,\n",
+    "    \"TwoPairs\": 7,\n",
+    "    \"OnePair\": 8,\n",
+    "    \"HighCard\": 9\n",
+    "}\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "str"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "type(d1.iloc[1,-1])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "''"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d1.iloc[1,-1]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "v=[]\n",
+    "\n",
+    "count1=0\n",
+    "for i in range(0,d1.shape[0]):\n",
+    "    if(d1.iloc[i,-1]!=''):\n",
+    "        count1+=1\n",
+    "        v.append(i)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d2=d1.iloc[v,:]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>11</th>\n",
+       "      <th>13</th>\n",
+       "      <th>16</th>\n",
+       "      <th>18</th>\n",
+       "      <th>20</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>K</td>\n",
+       "      <td>320</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>77</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>fullhouse</td>\n",
+       "      <td>T</td>\n",
+       "      <td>447</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>195</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>J</td>\n",
+       "      <td>220</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>5</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>J</td>\n",
+       "      <td>216</td>\n",
+       "      <td>straightflush</td>\n",
+       "      <td>T</td>\n",
+       "      <td>495</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>3</td>\n",
+       "      <td>6</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>6</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>9</td>\n",
+       "      <td>297</td>\n",
+       "      <td>straightflush</td>\n",
+       "      <td>A</td>\n",
+       "      <td>476</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>190</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>Q</td>\n",
+       "      <td>245</td>\n",
+       "      <td>4ofakind</td>\n",
+       "      <td>Q</td>\n",
+       "      <td>434</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>192</td>\n",
+       "      <td>fullhouse</td>\n",
+       "      <td>3</td>\n",
+       "      <td>430</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>J</td>\n",
+       "      <td>214</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>193</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>K</td>\n",
+       "      <td>169</td>\n",
+       "      <td>straight</td>\n",
+       "      <td>4</td>\n",
+       "      <td>490</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>AllIn</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>195</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>A</td>\n",
+       "      <td>243</td>\n",
+       "      <td>4ofakind</td>\n",
+       "      <td>K</td>\n",
+       "      <td>474</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>197</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>4</td>\n",
+       "      <td>104</td>\n",
+       "      <td>straight</td>\n",
+       "      <td>K</td>\n",
+       "      <td>466</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>AllIn</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>72 rows × 11 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "            2  3    4              6  7    8  11  13  16  18     20\n",
+       "0        flush  K  320       TwoPairs  A  120  5  10  20  77   Call\n",
+       "3    fullhouse  T  447       TwoPairs  A  195  5  10  20  40   Call\n",
+       "4      OnePair  9  486       TwoPairs  J  220  5  10  20  40   Fold\n",
+       "5      OnePair  J  216  straightflush  T  495  5  10   3   6   Fold\n",
+       "6      OnePair  9  297  straightflush  A  476  5  10  20  40   Fold\n",
+       "..         ... ..  ...            ... ..  ... ..  ..  ..  ..    ...\n",
+       "190   HighCard  Q  245       4ofakind  Q  434  5  10  20  40   Fold\n",
+       "192  fullhouse  3  430       TwoPairs  J  214  5  10  20  40   Call\n",
+       "193   TwoPairs  K  169       straight  4  490  5  10  20  40  AllIn\n",
+       "195   HighCard  A  243       4ofakind  K  474  5  10  20  40   Fold\n",
+       "197   HighCard  4  104       straight  K  466  5  10  20  40  AllIn\n",
+       "\n",
+       "[72 rows x 11 columns]"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Fold     34\n",
+       "Call     23\n",
+       "Raise     9\n",
+       "AllIn     6\n",
+       "Name: 20, dtype: int64"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d2.iloc[:,-1].value_counts()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#d2.columns={'p1_rank','p1_strength','p1_coins','p2_rank','p2_strength','p2_coins','p1_action','p2_action','p1_action1','p2_action1','p2_action2'}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>11</th>\n",
+       "      <th>13</th>\n",
+       "      <th>16</th>\n",
+       "      <th>18</th>\n",
+       "      <th>20</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>flush</td>\n",
+       "      <td>K</td>\n",
+       "      <td>320</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>77</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>fullhouse</td>\n",
+       "      <td>T</td>\n",
+       "      <td>447</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>A</td>\n",
+       "      <td>195</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>J</td>\n",
+       "      <td>220</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>5</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>J</td>\n",
+       "      <td>216</td>\n",
+       "      <td>straightflush</td>\n",
+       "      <td>T</td>\n",
+       "      <td>495</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>3</td>\n",
+       "      <td>6</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>6</td>\n",
+       "      <td>OnePair</td>\n",
+       "      <td>9</td>\n",
+       "      <td>297</td>\n",
+       "      <td>straightflush</td>\n",
+       "      <td>A</td>\n",
+       "      <td>476</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "      <td>...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>190</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>Q</td>\n",
+       "      <td>245</td>\n",
+       "      <td>4ofakind</td>\n",
+       "      <td>Q</td>\n",
+       "      <td>434</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>192</td>\n",
+       "      <td>fullhouse</td>\n",
+       "      <td>3</td>\n",
+       "      <td>430</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>J</td>\n",
+       "      <td>214</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Call</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>193</td>\n",
+       "      <td>TwoPairs</td>\n",
+       "      <td>K</td>\n",
+       "      <td>169</td>\n",
+       "      <td>straight</td>\n",
+       "      <td>4</td>\n",
+       "      <td>490</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>AllIn</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>195</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>A</td>\n",
+       "      <td>243</td>\n",
+       "      <td>4ofakind</td>\n",
+       "      <td>K</td>\n",
+       "      <td>474</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>Fold</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>197</td>\n",
+       "      <td>HighCard</td>\n",
+       "      <td>4</td>\n",
+       "      <td>104</td>\n",
+       "      <td>straight</td>\n",
+       "      <td>K</td>\n",
+       "      <td>466</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>AllIn</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "<p>72 rows × 11 columns</p>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "            2  3    4              6  7    8  11  13  16  18     20\n",
+       "0        flush  K  320       TwoPairs  A  120  5  10  20  77   Call\n",
+       "3    fullhouse  T  447       TwoPairs  A  195  5  10  20  40   Call\n",
+       "4      OnePair  9  486       TwoPairs  J  220  5  10  20  40   Fold\n",
+       "5      OnePair  J  216  straightflush  T  495  5  10   3   6   Fold\n",
+       "6      OnePair  9  297  straightflush  A  476  5  10  20  40   Fold\n",
+       "..         ... ..  ...            ... ..  ... ..  ..  ..  ..    ...\n",
+       "190   HighCard  Q  245       4ofakind  Q  434  5  10  20  40   Fold\n",
+       "192  fullhouse  3  430       TwoPairs  J  214  5  10  20  40   Call\n",
+       "193   TwoPairs  K  169       straight  4  490  5  10  20  40  AllIn\n",
+       "195   HighCard  A  243       4ofakind  K  474  5  10  20  40   Fold\n",
+       "197   HighCard  4  104       straight  K  466  5  10  20  40  AllIn\n",
+       "\n",
+       "[72 rows x 11 columns]"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "4"
+      ]
+     },
+     "execution_count": 25,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "RANK_CLASS_COURSE[d2.iloc[0,0]]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "rank= {'2':2,'3':3,'4':4,'5':5,'6':6,'7':7,'8':8,'9':9,'T':10,'J':11,'Q':12,'K':13,'A':14}\n",
+    "cv={'Fold':0,'Call':1,'Raise':2,'AllIn':3}"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "E:\\anaconda\\lib\\site-packages\\pandas\\core\\indexing.py:205: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n",
+      "  self._setitem_with_indexer(indexer, value)\n",
+      "E:\\anaconda\\lib\\site-packages\\ipykernel_launcher.py:4: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n",
+      "  after removing the cwd from sys.path.\n",
+      "E:\\anaconda\\lib\\site-packages\\ipykernel_launcher.py:5: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n",
+      "  \"\"\"\n",
+      "E:\\anaconda\\lib\\site-packages\\ipykernel_launcher.py:7: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n",
+      "  import sys\n",
+      "E:\\anaconda\\lib\\site-packages\\ipykernel_launcher.py:9: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n",
+      "  if __name__ == '__main__':\n",
+      "E:\\anaconda\\lib\\site-packages\\ipykernel_launcher.py:11: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame\n",
+      "\n",
+      "See the caveats in the documentation: http://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n",
+      "  # This is added back by InteractiveShellApp.init_path()\n"
+     ]
+    }
+   ],
+   "source": [
+    "for i in range(d2.shape[0]):\n",
+    "    v=d2.iloc[i,0]\n",
+    "    v1=d2.iloc[i,3]\n",
+    "    d2.iloc[i,0]=RANK_CLASS_COURSE[v]\n",
+    "    d2.iloc[i,3]=RANK_CLASS_COURSE[v1]\n",
+    "    v2=d2.iloc[i,1]\n",
+    "    d2.iloc[i,1]=rank[v2]\n",
+    "    v3=d2.iloc[i,-1]\n",
+    "    d2.iloc[i,-1]=cv[v3]\n",
+    "    v4=d2.iloc[i,4]\n",
+    "    d2.iloc[i,4]=rank[v4]\n",
+    "\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "d2=d2.astype('int')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>11</th>\n",
+       "      <th>13</th>\n",
+       "      <th>16</th>\n",
+       "      <th>18</th>\n",
+       "      <th>20</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>4</td>\n",
+       "      <td>13</td>\n",
+       "      <td>320</td>\n",
+       "      <td>7</td>\n",
+       "      <td>14</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>77</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>3</td>\n",
+       "      <td>10</td>\n",
+       "      <td>447</td>\n",
+       "      <td>7</td>\n",
+       "      <td>14</td>\n",
+       "      <td>195</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>8</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>7</td>\n",
+       "      <td>11</td>\n",
+       "      <td>220</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>5</td>\n",
+       "      <td>8</td>\n",
+       "      <td>11</td>\n",
+       "      <td>216</td>\n",
+       "      <td>1</td>\n",
+       "      <td>10</td>\n",
+       "      <td>495</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>3</td>\n",
+       "      <td>6</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>6</td>\n",
+       "      <td>8</td>\n",
+       "      <td>9</td>\n",
+       "      <td>297</td>\n",
+       "      <td>1</td>\n",
+       "      <td>14</td>\n",
+       "      <td>476</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   2   3    4   6   7    8   11  13  16  18  20\n",
+       "0   4  13  320   7  14  120   5  10  20  77   1\n",
+       "3   3  10  447   7  14  195   5  10  20  40   1\n",
+       "4   8   9  486   7  11  220   5  10  20  40   0\n",
+       "5   8  11  216   1  10  495   5  10   3   6   0\n",
+       "6   8   9  297   1  14  476   5  10  20  40   0"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d2.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "d2['p1_avg']=d1.iloc[:,6].add(d1.iloc[:,8])\n",
+    "d2['p2_avg']=d1.iloc[:,7].add(d1.iloc[:,9])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>11</th>\n",
+       "      <th>13</th>\n",
+       "      <th>16</th>\n",
+       "      <th>18</th>\n",
+       "      <th>20</th>\n",
+       "      <th>p1_avg</th>\n",
+       "      <th>p2_avg</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>4</td>\n",
+       "      <td>13</td>\n",
+       "      <td>320</td>\n",
+       "      <td>7</td>\n",
+       "      <td>14</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>77</td>\n",
+       "      <td>1</td>\n",
+       "      <td>520</td>\n",
+       "      <td>1077</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>3</td>\n",
+       "      <td>10</td>\n",
+       "      <td>447</td>\n",
+       "      <td>7</td>\n",
+       "      <td>14</td>\n",
+       "      <td>195</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>1</td>\n",
+       "      <td>520</td>\n",
+       "      <td>1040</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>8</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>7</td>\n",
+       "      <td>11</td>\n",
+       "      <td>220</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>0</td>\n",
+       "      <td>520</td>\n",
+       "      <td>1040</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>5</td>\n",
+       "      <td>8</td>\n",
+       "      <td>11</td>\n",
+       "      <td>216</td>\n",
+       "      <td>1</td>\n",
+       "      <td>10</td>\n",
+       "      <td>495</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>3</td>\n",
+       "      <td>6</td>\n",
+       "      <td>0</td>\n",
+       "      <td>53</td>\n",
+       "      <td>106</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>6</td>\n",
+       "      <td>8</td>\n",
+       "      <td>9</td>\n",
+       "      <td>297</td>\n",
+       "      <td>1</td>\n",
+       "      <td>14</td>\n",
+       "      <td>476</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>0</td>\n",
+       "      <td>520</td>\n",
+       "      <td>1040</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   2   3    4  6   7    8  11  13  16  18  20 p1_avg p2_avg\n",
+       "0  4  13  320  7  14  120   5  10  20  77   1    520   1077\n",
+       "3  3  10  447  7  14  195   5  10  20  40   1    520   1040\n",
+       "4  8   9  486  7  11  220   5  10  20  40   0    520   1040\n",
+       "5  8  11  216  1  10  495   5  10   3   6   0     53    106\n",
+       "6  8   9  297  1  14  476   5  10  20  40   0    520   1040"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d2.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [],
+   "source": [
+    "d2=d2.drop(['p1_avg','p2_avg'],axis=1)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>11</th>\n",
+       "      <th>13</th>\n",
+       "      <th>16</th>\n",
+       "      <th>18</th>\n",
+       "      <th>20</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <td>0</td>\n",
+       "      <td>4</td>\n",
+       "      <td>13</td>\n",
+       "      <td>320</td>\n",
+       "      <td>7</td>\n",
+       "      <td>14</td>\n",
+       "      <td>120</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>77</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>3</td>\n",
+       "      <td>3</td>\n",
+       "      <td>10</td>\n",
+       "      <td>447</td>\n",
+       "      <td>7</td>\n",
+       "      <td>14</td>\n",
+       "      <td>195</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>4</td>\n",
+       "      <td>8</td>\n",
+       "      <td>9</td>\n",
+       "      <td>486</td>\n",
+       "      <td>7</td>\n",
+       "      <td>11</td>\n",
+       "      <td>220</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>5</td>\n",
+       "      <td>8</td>\n",
+       "      <td>11</td>\n",
+       "      <td>216</td>\n",
+       "      <td>1</td>\n",
+       "      <td>10</td>\n",
+       "      <td>495</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>3</td>\n",
+       "      <td>6</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <td>6</td>\n",
+       "      <td>8</td>\n",
+       "      <td>9</td>\n",
+       "      <td>297</td>\n",
+       "      <td>1</td>\n",
+       "      <td>14</td>\n",
+       "      <td>476</td>\n",
+       "      <td>5</td>\n",
+       "      <td>10</td>\n",
+       "      <td>20</td>\n",
+       "      <td>40</td>\n",
+       "      <td>0</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   2   3    4   6   7    8   11  13  16  18  20\n",
+       "0   4  13  320   7  14  120   5  10  20  77   1\n",
+       "3   3  10  447   7  14  195   5  10  20  40   1\n",
+       "4   8   9  486   7  11  220   5  10  20  40   0\n",
+       "5   8  11  216   1  10  495   5  10   3   6   0\n",
+       "6   8   9  297   1  14  476   5  10  20  40   0"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "d2.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x=d2.iloc[:,:-1]\n",
+    "y=d2.iloc[:,-1]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.model_selection import train_test_split"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "x_train,x_test,y_train,y_test=train_test_split(x,y,test_size=0.2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.linear_model import LogisticRegression"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "E:\\anaconda\\lib\\site-packages\\sklearn\\linear_model\\logistic.py:432: FutureWarning: Default solver will be changed to 'lbfgs' in 0.22. Specify a solver to silence this warning.\n",
+      "  FutureWarning)\n",
+      "E:\\anaconda\\lib\\site-packages\\sklearn\\linear_model\\logistic.py:469: FutureWarning: Default multi_class will be changed to 'auto' in 0.22. Specify the multi_class option to silence this warning.\n",
+      "  \"this warning.\", FutureWarning)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/plain": [
+       "LogisticRegression(C=1.0, class_weight=None, dual=False, fit_intercept=True,\n",
+       "                   intercept_scaling=1, l1_ratio=None, max_iter=100,\n",
+       "                   multi_class='warn', n_jobs=None, penalty='l2',\n",
+       "                   random_state=None, solver='warn', tol=0.0001, verbose=0,\n",
+       "                   warm_start=False)"
+      ]
+     },
+     "execution_count": 38,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "lr=LogisticRegression()\n",
+    "lr.fit(x_train,y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y_pred=lr.predict(x_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.metrics import confusion_matrix,accuracy_score"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cm=confusion_matrix(y_pred,y_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[8, 1, 0],\n",
+       "       [0, 5, 0],\n",
+       "       [1, 0, 0]], dtype=int64)"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cm"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "logistics regression accuracy: 0.8666666666666667\n"
+     ]
+    }
+   ],
+   "source": [
+    "print('logistics regression accuracy:',accuracy_score(y_test,y_pred))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Gaussian navie_bayes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.naive_bayes import GaussianNB"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "GaussianNB(priors=None, var_smoothing=1e-09)"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "gn=GaussianNB()\n",
+    "gn.fit(x_train,y_train)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y_pred1=gn.predict(x_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cm1=confusion_matrix(y_pred1,y_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[0, 0, 0],\n",
+       "       [2, 5, 0],\n",
+       "       [7, 1, 0]], dtype=int64)"
+      ]
+     },
+     "execution_count": 48,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cm1"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "accuracy score of Gaussian navie bayes: 0.3333333333333333\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"accuracy score of Gaussian navie bayes:\",accuracy_score(y_pred1,y_test))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### knn"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn.neighbors import KNeighborsClassifier"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 59,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "KNeighborsClassifier(algorithm='auto', leaf_size=30, metric='minkowski',\n",
+       "                     metric_params=None, n_jobs=None, n_neighbors=7, p=2,\n",
+       "                     weights='uniform')"
+      ]
+     },
+     "execution_count": 59,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "knn=KNeighborsClassifier(n_neighbors=7)\n",
+    "knn.fit(x_train,y_train)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 60,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "y_pred2=knn.predict(x_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 61,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "cm2=confusion_matrix(y_pred2,y_test)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 62,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array([[6, 1, 0],\n",
+       "       [2, 5, 0],\n",
+       "       [1, 0, 0]], dtype=int64)"
+      ]
+     },
+     "execution_count": 62,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "cm2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 63,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "accuracy of knn: 0.7333333333333333\n"
+     ]
+    }
+   ],
+   "source": [
+    "print(\"accuracy of knn:\",accuracy_score(y_test,y_pred2))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "###  Parameter tuning"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 56,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "from sklearn import metrics\n",
+    "scores={}\n",
+    "score_list=[]\n",
+    "k_range=range(1,30)\n",
+    "\n",
+    "for k in k_range:\n",
+    "    knn1=KNeighborsClassifier(n_neighbors=k)\n",
+    "    knn1.fit(x_train,y_train)\n",
+    "    y_pred_knn=knn1.predict(x_test)\n",
+    "    scores[k]=metrics.accuracy_score(y_test,y_pred_knn)\n",
+    "    score_list.append(metrics.accuracy_score(y_test,y_pred_knn))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 57,
+   "metadata": {
+    "scrolled": true
+   },
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Text(0, 0.5, 'testing accuracy')"
+      ]
+     },
+     "execution_count": 57,
+     "metadata": {},
+     "output_type": "execute_result"
+    },
+    {
+     "data": {
+      "image/png": "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\n",
+      "text/plain": [
+       "<Figure size 432x288 with 1 Axes>"
+      ]
+     },
+     "metadata": {
+      "needs_background": "light"
+     },
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "%matplotlib inline\n",
+    "import matplotlib.pyplot as plt\n",
+    "plt.plot(k_range,score_list)\n",
+    "plt.xlabel(\"value of knn\")\n",
+    "plt.ylabel(\"testing accuracy\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 58,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "logistics regression accuracy: 0.8666666666666667\n",
+      "accuracy of knn: 0.6666666666666666\n",
+      "accuracy score of Gaussian navie bayes: 0.3333333333333333\n"
+     ]
+    }
+   ],
+   "source": [
+    "print('logistics regression accuracy:',accuracy_score(y_test,y_pred))\n",
+    "print(\"accuracy of knn:\",accuracy_score(y_test,y_pred2))\n",
+    "print(\"accuracy score of Gaussian navie bayes:\",accuracy_score(y_pred1,y_test))"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.7.4"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
